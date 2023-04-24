@@ -17,10 +17,20 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from . import views
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path("main/",views.main),
     path("diagnosis/",views.diagnosis),
     path("vison_predict/",views.vison_predict),
+    path("ml_insert/",views.ml_insert),
+    path("ml_save_file/",views.ml_file_save),
     
 ]
+
+if settings.DEBUG: 
+    urlpatterns += static(
+        settings.MEDIA_URL, 
+        document_root = settings.MEDIA_ROOT
+    )

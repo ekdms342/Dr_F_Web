@@ -190,8 +190,16 @@
                                 <option value="잎">잎</option>
                                 <option value="줄기">줄기</option>
                                 <option value="뿌리">뿌리</option>
-                                <option value="과실">과실</option>
-                                <option value="꽃">꽃</option>
+                                <option value="과실">과실(열매)</option>
+                                <option value="토양">토양</option>
+                                <option value="엽">엽</option>
+                                <option value="껍질">껍질</option>
+                                <option value="꽃받침">꽃받침</option>
+                                <option value="생장점">생장점</option>
+                                <option value="알">알</option>
+                                <option value="과육">과육</option>
+
+                                
                             </select>
                         </div>
                         <br>
@@ -204,9 +212,12 @@
                                 <option value="갈색">갈색</option>
                                 <option value="암갈색">암갈색</option>
                                 <option value="회갈색">회갈색</option>
-                                <option value="흰색">흰색</option>
+                                <option value="흰색">흰색(백색)</option>
                                 <option value="흑색">흑색</option>
                                 <option value="회색(잿빛)">회색(잿빛)</option>
+                                <option value="녹색">녹색</option>
+                                <option value="자색">자색</option>
+
                             </select>
                         </div>
                         <br>
@@ -215,10 +226,24 @@
                             <br>
                             <select name="shape">
                                 <option value="해당없음">해당없음</option>
-                                <option value="원형">원형</option>
+                                <option value="원형(동심,원상)">원형(동심,원상)</option>
                                 <option value="움푹파임">움푹파임</option>
-                                <option value="반점">반점</option>
+                                <option value="반점(점)">반점(점)</option>
                                 <option value="가루">가루</option>
+                                <option value="광택">광택</option>          
+                                <option value="연화">연화</option>          
+                                <option value="황화">황화</option>
+                                <option value="비대">비대</option>
+                                <option value="노엽">노엽</option>
+                                <option value="상위">상위</option>
+                                <option value="변색">변색</option>
+                                <option value="저온">저온</option>
+                                <option value="방사">방사</option>
+                                <option value="무늬">무늬</option>
+                                <option value="생기">생기</option>
+
+
+
                             </select>
                         </div>
                         <br><br>
@@ -287,6 +312,7 @@
                 };
             }
 
+            // 이미지 저장하기 위해서 server로 이미지 보내기 
             function goImages(file) {
                 alert('goImage');
                 const formData = new FormData();

@@ -2,6 +2,7 @@ from django.db import models
 
 class Image(models.Model):
     
-    head_image = models.ImageField(upload_to='dr_f_app/images/',blank=True)
+    image = models.ImageField(upload_to='dr_f_app/images/',blank=True)
+    csv = models.FileField(upload_to='dr_f_app/csv/',blank=True)
     
 # Create your models here.

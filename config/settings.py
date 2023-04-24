@@ -121,7 +121,7 @@ STATIC_URL = "static/"
 
 # 미디어 업로드를 위한 경로 지정  
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR,'_media')
+MEDIA_ROOT = os.path.join(BASE_DIR,'dr_f_app/_media')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
