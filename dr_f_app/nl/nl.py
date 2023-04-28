@@ -16,4 +16,15 @@ class NL :
     
     def __init__(self) :
         
-        self.model
+        # 사전에 임베딩 해 저장해둔 파일 가져오기 
+        self.df = pd.read_csv("./nl_csv")
+        # text 임베딩 값 계산을 위한 모델 가져오기 
+        self.model = SentenceTransformer('jhgan/ko-sroberta-multitask')
+    
+    def predict(self,position,color,shape) :
+        
+        text = "" + position + color + shape
+        ebd=self.model.encode(text)
+        # 코사인 유사도 값 계산 해서 저장하기 
+        self.df['distance'] = self.df['embedding'].map(lambda x : cosine_similarity([ebd], [x]).squeeze())
+        # 

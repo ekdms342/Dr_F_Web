@@ -23,9 +23,11 @@ from django.conf.urls.static import static
 urlpatterns = [
     path("main/",views.main),
     path("diagnosis/",views.diagnosis),
-    path("vison_predict/",views.vison_predict),
+    path("diagnosis_predict/",views.diagnosis_predict),
+    
     path("ml_insert/",views.ml_insert),
-    path("ml_save_file/",views.ml_file_save),
+    path("ml_predict/",views.ml_predict),
+    
     
 ]
 

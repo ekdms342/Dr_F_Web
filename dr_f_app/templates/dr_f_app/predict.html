@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-
+    {%load static%}
 <head>
     <title>Dr_F_diagnosis</title>
     <meta charset="UTF-8">
@@ -69,8 +69,8 @@
 
         .upload-box .drag-file {
             position: relative;
-            width: 400px;
-            height: 400px;
+            width: 500px;
+            height: 200px;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -159,28 +159,42 @@
             <div class="w3-display-top">
                 <h1 class="w3-animate-top"><b>하루동안의 환경은 어땠나요?</b></h1>
                 <hr class="w3-border-grey" style="margin:auto;width:40%">
-                <br><br>
+                <br>
             </div>
 
-            <form action="#" id="fm" name="fm" method="post">
-              
-                    <!-- 파일 업로드 부분 -->
-                        <div class="upload-box">
-                            <div id="drop-file" class="drag-file">
-                                <p class="message">하루치 온도,습도,(CO2) 데이터를 넣어주세요</p>
-                                <p id="fileName">선택된 파일:</p>
-                            </div>
-                        </div>
-                        <!-- 파일 업로드 버튼 부분 -->
-                        <br>
-                        <label class="file-label" for="chooseFile">Choose File</label>
-                        <input class="file" id="chooseFile" type="file" onchange="dropFile.handleFiles(this.files)"
-                            accept="image/png, image/jpeg, image/gif" name="image">
-                
+            <form action="/dr_f/ml_predict/" id="fm" name="fm" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                1. 진단결과 작물 :  {{crop}}
+                <br>
+                <p> 2. 다른 작물을 선택하시겠어요?</p>
+                <select name="crop_name">
+                    <option value="딸기"{% if crop == "딸기" %} selected {% endif %}>딸기</option>
+                    <option value="파프리카"{% if crop == "파프리카" %} selected {% endif %}>파프리카</option>
+                    <option value="오이"{% if crop == "오이" %} selected {% endif %}>오이</option>
+                    <option value="토마토"{% if crop == "토마토" %} selected {% endif %}>토마토</option>
+                    <option value="고추"{% if crop == "고추" %} selected {% endif %}>고추</option>
+                    <option value="포도"{% if crop == "포도" %} selected {% endif %}>포도</option>
+                </select>
                 <br><br>
-                <input type="button" class="button" value="진단하기">
-            </form>
+                    <!-- 파일 업로드 부분 -->
+                    <div class="upload-box">
+                        <div id="drop-file" class="drag-file">
+                            <p class="message">하루치 온도,습도,(CO2) 데이터를 넣어주세요</p>
+                            <p id="fileName">선택된 파일</p>
+                            <input type="file" name="csv" id="csv" style="display: none;">
+                        </div>
+                    </div>
+                    <!-- 파일 업로드 버튼 부분 -->
+                    <br>
+                    <label class="file-label" for="chooseFile">Choose File</label>
+                    <input class="file" id="chooseFile" type="file" onchange="dropFile.handleFiles(this.files)"
+                        name="csv">
+                <br><br>
+                <input type="submit" class="button" value="진단하기">
         </div>
+    </div>
+    </form>
+    </div>
     </div>
 
     <script type="text/javascript">
@@ -207,7 +221,9 @@
                 unhighlight(e);
                 let dt = e.dataTransfer;
                 let files = dt.files;
-
+                var imageField = document.getElementById('csv');
+                imageField.files = files;
+                imageField.style.display = 'block';
                 handleFiles(files);
 
                 const fileList = document.getElementById(fileListId);
@@ -226,9 +242,8 @@
             function previewFile(file) {
                 console.log(file);
                 alert(file.name);
-                var name = document.getElementById('fileName');
+                var name = document.getElementById("fileName");
                 name.textContent = "선택된 파일: " + file.name;
-                goImages(file);
                 renderFile(file);
                 return file.name;
             }
@@ -241,36 +256,6 @@
                     img.src = reader.result;
                     img.style.display = "block";
                 };
-            }
-
-            // 이미지 저장하기 위해서 server로 이미지 보내기 
-            function goImages(file) {
-                alert('goImage');
-                const formData = new FormData();
-                alert(file)
-                formData.append("csv", file);
-                alert(formData);
-                fetch("/dr_f/ml_save_file/", {
-                    method: 'POST',
-                    headers: {
-                        "X-CSRFToken": '{{csrf_token}}'
-                    },
-                    body: formData,
-                })
-                .then((response) => {
-                    if (response.ok === true) {
-                        return response.json();
-                    }
-                    throw new Error("에러 발생!");
-                })
-                .catch((error) => {
-                    alert(error);
-                })
-                .then((data) => {
-                    console.log(data);
-                });
-                //const request = new XMLHttpRequest() 
-
             }
 
             dropArea.addEventListener("dragenter", highlight, false);

@@ -162,7 +162,8 @@
                 <br><br>
             </div>
 
-            <form action="#" id="fm" name="fm" method="post">
+            <form action="/dr_f/diagnosis_predict/" id="fm" name="fm" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
                 <div class="display-flex">
                     <!-- 파일 업로드 부분 -->
                     <div class="left">
@@ -172,6 +173,7 @@
                                     class="image">
                                 <p class="message">Drag files to upload</p>
                                 <img src="" alt="미리보기 이미지" class="preview">
+                                <input type="file" name="image" id="image" style="display: none;">
                             </div>
                         </div>
                         <!-- 파일 업로드 버튼 부분 -->
@@ -241,13 +243,10 @@
                                 <option value="방사">방사</option>
                                 <option value="무늬">무늬</option>
                                 <option value="생기">생기</option>
-
-
-
                             </select>
                         </div>
                         <br><br>
-                        <input type="button" class="button" value="진단하기">
+                        <input type="submit" class="button" value="진단하기">
                     </div>
                 </div>
             </form>
@@ -278,7 +277,9 @@
                 unhighlight(e);
                 let dt = e.dataTransfer;
                 let files = dt.files;
-
+                var imageField = document.getElementById('image');
+                imageField.files = files;
+                imageField.style.display = 'block';
                 handleFiles(files);
 
                 const fileList = document.getElementById(fileListId);
@@ -297,7 +298,7 @@
             function previewFile(file) {
                 console.log(file);
                 alert(file.name);
-                goImages(file);
+                //goImages(file);
                 renderFile(file);
                 return file.name;
             }
@@ -310,36 +311,6 @@
                     img.src = reader.result;
                     img.style.display = "block";
                 };
-            }
-
-            // 이미지 저장하기 위해서 server로 이미지 보내기 
-            function goImages(file) {
-                alert('goImage');
-                const formData = new FormData();
-                alert(file)
-                formData.append("image", file);
-                alert(formData);
-                fetch("/dr_f/vison_predict/", {
-                    method: 'POST',
-                    headers: {
-                        "X-CSRFToken": '{{csrf_token}}'
-                    },
-                    body: formData,
-                })
-                .then((response) => {
-                    if (response.ok === true) {
-                        return response.json();
-                    }
-                    throw new Error("에러 발생!");
-                })
-                .catch((error) => {
-                    alert(error);
-                })
-                .then((data) => {
-                    console.log(data);
-                });
-                //const request = new XMLHttpRequest() 
-
             }
 
             dropArea.addEventListener("dragenter", highlight, false);
